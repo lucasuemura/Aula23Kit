@@ -3,6 +3,13 @@ package br.com.starlog.model;
 /**
  * CAMADA MODEL (Modelo de Domínio)
  * Representa uma mensagem criptográfica a ser transmitida.
+ * 
+ * ATENÇÃO ESTUDANTE:
+ * Implemente esta classe a partir do código extraído da TelaCaoticaLegada
+ * para satisfazer os testes TDD de 01 a 06!
+ * 
+ * REGRA SAGRADA DE ARQUITETURA:
+ * O Model NUNCA deve importar componentes visuais (zero imports de javax.swing.*)!
  */
 public class CriptoMensagem {
     private final String remetente;
@@ -10,7 +17,6 @@ public class CriptoMensagem {
     private final int chaveDeslocamento;
 
     public CriptoMensagem(String remetente, String mensagem, int chaveDeslocamento) {
-        // Etapa 2 - Barreira Fail-Fast
         if (remetente == null || remetente.trim().isEmpty()) {
             throw new IllegalArgumentException("Remetente não pode ser nulo ou vazio.");
         }
@@ -21,7 +27,6 @@ public class CriptoMensagem {
             throw new IllegalArgumentException("Chave deve estar entre 1 e 25.");
         }
 
-        // Normalização (.trim().toUpperCase())
         this.remetente = remetente.trim().toUpperCase();
         this.mensagem = mensagem.trim().toUpperCase();
         this.chaveDeslocamento = chaveDeslocamento;

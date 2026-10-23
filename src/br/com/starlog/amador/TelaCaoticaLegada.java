@@ -3,7 +3,16 @@ package br.com.starlog.amador;
 import br.com.starlog.controller.TransmissaoController;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+/**
+ * TELA REFATORADA COM PADRÃO MVC • ESTAÇÃO STARLOG-ZERO
+ * 
+ * Agora a View atua apenas como Casca Visual (Garçom): coleta os dados brutos
+ * dos campos de texto, delega o processamento para o TransmissaoController
+ * e exibe o resultado ou mensagem de erro amigável via JOptionPane.
+ */
 public class TelaCaoticaLegada extends JFrame {
 
     private JTextField txtRemetente;
@@ -38,18 +47,20 @@ public class TelaCaoticaLegada extends JFrame {
         areaLog = new JTextArea(10, 35);
         add(new JScrollPane(areaLog));
 
-        // Botão enxuto seguindo o padrão MVC: apenas delega ao Controller e exibe o resultado!
-        btnDespacharCifrado.addActionListener(e -> {
-            try {
-                String pacote = controller.processarTransmissao(
-                        txtRemetente.getText(),
-                        txtMensagem.getText(),
-                        txtChaveCifra.getText()
-                );
-                areaLog.append(pacote + "\n");
-                JOptionPane.showMessageDialog(this, "Transmissão efetuada com sucesso!");
-            } catch (IllegalArgumentException ex) {
-                JOptionPane.showMessageDialog(this, "ERRO: " + ex.getMessage());
+        btnDespacharCifrado.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    String pacoteFinal = controller.processarTransmissao(
+                            txtRemetente.getText(),
+                            txtMensagem.getText(),
+                            txtChaveCifra.getText()
+                    );
+                    areaLog.append(pacoteFinal + "\n");
+                    JOptionPane.showMessageDialog(TelaCaoticaLegada.this, "Transmissão efetuada com sucesso!");
+                } catch (IllegalArgumentException ex) {
+                    JOptionPane.showMessageDialog(TelaCaoticaLegada.this, "ERRO: " + ex.getMessage(), "Erro de Validação", JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
     }
